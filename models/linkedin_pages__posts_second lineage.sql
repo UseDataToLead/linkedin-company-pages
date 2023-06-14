@@ -1,86 +1,57 @@
-with share_statistic as (
+with page_statistic_by_industry as (
 
     select *
-    from {{ var('share_statistic_staging') }}
+    from {{ ref('page_statistic_by_industry') }}
 
 ),
 
-ugc_post_share_statistic as (
+industry as (
 
     select *
-    from {{ ref('int_linkedin_pages__latest_post') }}
+    from {{ ref('industry') }}
     where is_most_recent_record = true
 
 ),
 
-ugc_post_history as (
 
-    select *
-    from {{ ref('int_linkedin_pages__latest_post_history') }}
-    where is_most_recent_record = true
 
-),
-
-ugc_post_share_content_media as (
-
-    select *
-    from {{ var('ugc_post_share_content_media_staging') }}
-
-),
-
-organization as (
-
-    select *
-    from {{ var('organization_staging') }}
-
-),
-
-organization_ugc_post as (
-
-    select *
-    from {{ var('organization_ugc_post_staging') }}
-
-),
-
-joined as (
+joined_page_statistic_by_industry as (
 
     select
-        ugc_post_history.ugc_post_id,
-        ugc_post_history.post_author,
-        ugc_post_history.post_url,
-        ugc_post_history.created_timestamp,
-        ugc_post_history.first_published_timestamp,
-        ugc_post_history.lifecycle_state,
-        ugc_post_history.version_tag,
-        ugc_post_history.specific_content_share_commentary_text,
-        ugc_post_share_content_media.title_text,
-        ugc_post_share_content_media.original_url,
-        organization.organization_id,
-        organization.organization_name,
-        share_statistic.click_count,
-        share_statistic.comment_count,
-        share_statistic.impression_count,
-        share_statistic.like_count,
-        share_statistic.share_count,
-        ugc_post_history.source_relation
-    from ugc_post_history
-    left join ugc_post_share_statistic
-        on cast(ugc_post_share_statistic.ugc_post_id as {{ dbt.type_string() }}) = cast(ugc_post_history.ugc_post_id as {{ dbt.type_string() }})
-        and ugc_post_share_statistic.source_relation = ugc_post_history.source_relation
-    left join share_statistic
-        on share_statistic.share_statistic_id = ugc_post_share_statistic.share_statistic_id
-        and share_statistic.source_relation = ugc_post_share_statistic.source_relation
-    left join ugc_post_share_content_media
-        on ugc_post_history.ugc_post_id = ugc_post_share_content_media.ugc_post_id
-        and ugc_post_history.source_relation = ugc_post_share_content_media.source_relation
-    left join organization_ugc_post
-        on ugc_post_history.ugc_post_id = organization_ugc_post.ugc_post_id
-        and ugc_post_history.source_relation = organization_ugc_post.source_relation
-    left join organization
-        on organization_ugc_post.organization_id = organization.organization_id
-        and organization_ugc_post.source_relation = organization.source_relation
+industry.name,			
+page_statistic_by_industry.about_page_views,					
+page_statistic_by_industry.all_desktop_page_views,					
+page_statistic_by_industry.all_mobile_page_views,					
+page_statistic_by_industry.all_page_views,						
+page_statistic_by_industry.careers_page_views,						
+page_statistic_by_industry.desktop_about_page_views,						
+page_statistic_by_industry.desktop_careers_page_views,					
+page_statistic_by_industry.desktop_insights_page_views,				
+page_statistic_by_industry.desktop_jobs_page_views,		
+page_statistic_by_industry.desktop_life_at_page_views,				
+page_statistic_by_industry.desktop_overview_page_views,					
+page_statistic_by_industry.desktop_people_page_views,				
+page_statistic_by_industry.desktop_products_page_views,					
+page_statistic_by_industry.industry_id,
+page_statistic_by_industry.insights_page_views,				
+page_statistic_by_industry.jobs_page_views,			
+page_statistic_by_industry.life_at_page_views,				
+page_statistic_by_industry.mobile_about_page_views,				
+page_statistic_by_industry.mobile_careers_page_views,					
+page_statistic_by_industry.mobile_insights_page_views,				
+page_statistic_by_industry.mobile_jobs_page_views,				
+page_statistic_by_industry.mobile_life_at_page_views,			
+page_statistic_by_industry.mobile_overview_page_views,					
+page_statistic_by_industry.mobile_people_page_views,					
+page_statistic_by_industry.mobile_products_page_views,				
+page_statistic_by_industry.overview_page_views,					
+page_statistic_by_industry.people_page_views,					
+page_statistic_by_industry.products_page_views
+    from page_statistic_by_industry
+    left join industry
+        on industry.id = page_statistic_by_industry.industry_id
 
 )
 
 select *
-from joined
+from joined_page_statistic_by_industry
