@@ -1,14 +1,14 @@
 with page_statistic_by_industry as (
 
     select *
-    from {{ ref('page_statistic_by_industry') }}
+    from 'linkedin_company_pages.page_statistic_by_industry'
 
 ),
 
 industry as (
 
     select *
-    from {{ ref('industry') }}
+    from 'linkedin_company_pages.industry'
     where is_most_recent_record = true
 
 ),
