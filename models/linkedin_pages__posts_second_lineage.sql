@@ -9,7 +9,6 @@ industry as (
 
     select *
     from 'linkedin_company_pages.industry'
-    where is_most_recent_record = true
 
 ),
 
