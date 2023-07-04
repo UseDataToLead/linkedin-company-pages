@@ -45,4 +45,3 @@ models:
         description: The localized name of the organization 
       - name: source_relation
         description: The source of the record, if the unioning functionality is being used.
-  - name: linkedin_pages__posts_second_lineage
