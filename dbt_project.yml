@@ -15,3 +15,6 @@ models:
     +materialized: table
     tmp:
       +materialized: table
+vars:
+    linkedin_pages_schema: social-media-389011
+    linkedin_pages_database: linkedin_company_pages
