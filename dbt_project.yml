@@ -11,5 +11,5 @@ vars:
   organization_ugc_post_staging: "{{ ref('stg_linkedin_pages__organization_ugc_post') }}"
 models:
   linkedin_pages:
-    +schema: linkedin_pages
+    +schema: social-media-389011
     +materialized: table
