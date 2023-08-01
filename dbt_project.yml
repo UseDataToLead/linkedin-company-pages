@@ -9,9 +9,8 @@ vars:
   ugc_post_share_content_media_staging: "{{ ref('stg_linkedin_pages__ugc_post_share_content_media') }}"
   organization_staging: "{{ ref('stg_linkedin_pages__organization') }}"
   organization_ugc_post_staging: "{{ ref('stg_linkedin_pages__organization_ugc_post') }}"
+  linkedin_pages_schema: social-media-389011
 models:
   linkedin_pages:
     +schema: linkedin_pages
     +materialized: table
-vars:
-    linkedin_pages_schema: social-media-389011
